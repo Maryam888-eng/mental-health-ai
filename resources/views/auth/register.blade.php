@@ -1,0 +1,647 @@
+<x-guest-layout>
+
+    <!-- ===== META FIX: Disable zoom completely ===== -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+
+    <style>
+        /* ===== RESET ===== */
+        * {
+            -webkit-text-size-adjust: 100% !important;
+            -moz-text-size-adjust: 100% !important;
+            -ms-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+            box-sizing: border-box;
+        }
+
+        /* ===== ZOOM FIX ===== */
+        input,
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="search"],
+        input[type="url"],
+        textarea,
+        select,
+        button {
+            font-size: 16px !important;
+            -webkit-text-size-adjust: 100% !important;
+        }
+
+        input:focus,
+        textarea:focus,
+        select:focus {
+            font-size: 16px !important;
+            transform: scale(1) !important;
+            -webkit-transform: scale(1) !important;
+        }
+
+        html,
+        body {
+            -webkit-text-size-adjust: 100% !important;
+            -moz-text-size-adjust: 100% !important;
+            -ms-text-size-adjust: 100% !important;
+            text-size-adjust: 100% !important;
+            touch-action: manipulation;
+        }
+
+        /* ===== SKY BLUE THEME ===== */
+        body {
+            background: linear-gradient(145deg, #e3f2fd 0%, #bbdefb 30%, #e3f2fd 60%, #f3e5f5 100%) !important;
+            background-attachment: fixed !important;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        /* ===== Card animation ===== */
+        .card-enter {
+            animation: floatUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+
+        @keyframes floatUp {
+            0% {
+                opacity: 0;
+                transform: translateY(30px) scale(0.97);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* ===== GLASS CARD - Width zyada, Height aur kam ===== */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 30px 60px -20px rgba(13, 71, 161, 0.10), 0 10px 30px -15px rgba(0, 0, 0, 0.06);
+            max-width: 620px;
+            /* Width zyada - pehle 580px tha */
+            width: 100%;
+            border-radius: 28px;
+            padding: 1rem 2rem !important;
+            /* Height aur kam - pehle 1.25rem tha */
+            min-height: auto;
+            overflow: hidden;
+            margin: 0 auto;
+        }
+
+        /* ===== Input styling ===== */
+        .input-field {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-field .input-icon {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #1565c0;
+            font-size: 16px;
+            pointer-events: none;
+            z-index: 2;
+            opacity: 0.6;
+        }
+
+        .input-field input {
+            width: 100%;
+            padding: 12px 14px 12px 44px;
+            /* Padding kam - height kam */
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.5px solid rgba(21, 101, 192, 0.10);
+            border-radius: 14px;
+            font-size: 16px !important;
+            color: #1e293b;
+            transition: all 0.25s ease;
+            outline: none;
+            height: 46px;
+            /* Height kam - pehle 54px tha */
+            -webkit-text-size-adjust: 100% !important;
+        }
+
+        .input-field input:focus {
+            border-color: #1565c0;
+            box-shadow: 0 0 0 4px rgba(21, 101, 192, 0.08), 0 0 0 2px rgba(21, 101, 192, 0.04);
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1) !important;
+        }
+
+        .input-field input::placeholder {
+            color: #90caf9;
+            font-weight: 400;
+        }
+
+        /* ===== Password toggle ===== */
+        .password-toggle-btn {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 6px;
+            font-size: 18px;
+            line-height: 1;
+            color: #1565c0;
+            transition: color 0.2s ease;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            -webkit-tap-highlight-color: transparent;
+            opacity: 0.6;
+        }
+
+        .password-toggle-btn:hover {
+            color: #0d47a1;
+            background: rgba(21, 101, 192, 0.06);
+            opacity: 1;
+        }
+
+        .password-toggle-btn:active {
+            transform: translateY(-50%) scale(0.92);
+        }
+
+        .input-field input[type="password"],
+        .input-field input[type="text"] {
+            padding-right: 50px !important;
+        }
+
+        /* ===== Button - Height kam ===== */
+        .btn-glow {
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            height: 46px;
+            /* Height kam - pehle 54px tha */
+            font-size: 16px;
+            font-weight: 700;
+            border: none;
+            border-radius: 14px;
+            background: linear-gradient(135deg, #1e88e5, #0d47a1);
+            color: white;
+            width: 100%;
+            cursor: pointer;
+            box-shadow: 0 8px 30px -8px rgba(21, 101, 192, 0.30);
+            -webkit-tap-highlight-color: transparent;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-glow:hover {
+            box-shadow: 0 12px 40px -10px rgba(21, 101, 192, 0.40);
+            transform: translateY(-2px);
+            background: linear-gradient(135deg, #1565c0, #0d47a1);
+        }
+
+        .btn-glow:active {
+            transform: scale(0.97);
+        }
+
+        /* ===== Spacing - aur kam ===== */
+        .form-group {
+            margin-bottom: 0.5rem;
+            /* Pehle 0.65rem tha - aur kam */
+        }
+
+        .form-group:last-of-type {
+            margin-bottom: 0;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.7rem;
+            /* Chhota */
+            font-weight: 600;
+            color: #0d47a1;
+            margin-bottom: 2px;
+            /* Kam */
+        }
+
+        .password-hint {
+            font-size: 10px;
+            color: #1565c0;
+            margin-top: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            opacity: 0.7;
+        }
+
+        /* ===== Brand colors ===== */
+        .brand-heading {
+            color: #0d47a1;
+            font-weight: 700;
+        }
+
+        .brand-sub {
+            color: #1565c0;
+            opacity: 0.8;
+        }
+
+        .divider-line {
+            border-color: rgba(21, 101, 192, 0.06) !important;
+        }
+
+        .link-blue {
+            color: #1565c0;
+        }
+
+        .link-blue:hover {
+            color: #0d47a1;
+        }
+
+        /* ===== LOGO ===== */
+        .logo-wrapper {
+            width: 110px;
+            height: 110px;
+            margin: 0 auto 0.25rem auto;
+            /* Margin kam */
+            border-radius: 50%;
+            overflow: hidden;
+            background: rgba(21, 101, 192, 0.04);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid rgba(21, 101, 192, 0.06);
+            padding: 14px;
+        }
+
+        .logo-wrapper img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+        }
+
+        .logo-glow {
+            position: absolute;
+            inset: -8px;
+            background: radial-gradient(circle, rgba(21, 101, 192, 0.06), transparent 70%);
+            border-radius: 50%;
+            animation: pulseGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%,
+            100% {
+                opacity: 0.5;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.05);
+            }
+        }
+
+        /* ===== Heading area - spacing kam ===== */
+        .heading-area {
+            margin-bottom: 0.75rem;
+            /* Pehle 1rem tha - kam */
+        }
+
+        .heading-area h1 {
+            font-size: 1.3rem;
+            /* Chhota */
+        }
+
+        .heading-area p {
+            font-size: 0.7rem;
+            /* Chhota */
+        }
+
+        /* ===== Responsive ===== */
+        @media (max-width: 480px) {
+            .glass-card {
+                padding: 0.75rem 0.875rem !important;
+                max-width: 100%;
+            }
+
+            .input-field input {
+                height: 42px;
+                padding: 10px 10px 10px 36px;
+                font-size: 16px !important;
+            }
+
+            .input-field .input-icon {
+                left: 10px;
+                font-size: 13px;
+            }
+
+            .password-toggle-btn {
+                right: 8px;
+                width: 32px;
+                height: 32px;
+                font-size: 16px;
+                padding: 4px;
+            }
+
+            .input-field input[type="password"],
+            .input-field input[type="text"] {
+                padding-right: 42px !important;
+            }
+
+            .btn-glow {
+                height: 42px;
+                font-size: 14px;
+            }
+
+            .logo-wrapper {
+                width: 70px;
+                height: 70px;
+                padding: 10px;
+            }
+
+            .heading-area h1 {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (min-width: 481px) and (max-width: 768px) {
+            .glass-card {
+                max-width: 540px;
+                padding: 1rem 1.5rem !important;
+            }
+
+            .logo-wrapper {
+                width: 95px;
+                height: 95px;
+            }
+        }
+    </style>
+
+    <!-- Main Card -->
+    <div class="card-enter glass-card">
+
+        <!-- ===== LOGO + HEADING ===== -->
+        <div class="text-center heading-area">
+
+            <div class="logo-wrapper relative mx-auto">
+                <div class="logo-glow"></div>
+                <img src="{{ asset('images/logo.png') }}"
+                     alt="Mental Health Logo"
+                     class="relative"
+                />
+            </div>
+
+            <h1 class="text-2xl font-bold brand-heading tracking-tight">
+                Create Account
+            </h1>
+
+            <p class="brand-sub mt-1 text-sm font-medium">
+                Join us and start your mental wellness journey.
+            </p>
+
+        </div>
+
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
+
+            <!-- ===== FULL NAME ===== -->
+            <div class="form-group">
+                <label for="name" class="form-label">
+                    Full Name
+                </label>
+
+                <div class="input-field">
+                    <span class="input-icon">👤</span>
+                    <input
+                        id="name"
+                        type="text"
+                        name="name"
+                        value="{{ old('name') }}"
+                        required
+                        autofocus
+                        autocomplete="name"
+                        placeholder="Enter your full name"
+                    />
+                </div>
+
+                <x-input-error :messages="$errors->get('name')" class="mt-1 text-sm text-blue-600" />
+            </div>
+
+            <!-- ===== EMAIL ===== -->
+            <div class="form-group">
+                <label for="email" class="form-label">
+                    Email Address
+                </label>
+
+                <div class="input-field">
+                    <span class="input-icon">✉️</span>
+                    <input
+                        id="email"
+                        type="email"
+                        name="email"
+                        value="{{ old('email') }}"
+                        required
+                        autocomplete="username"
+                        placeholder="you@example.com"
+                    />
+                </div>
+
+                <x-input-error :messages="$errors->get('email')" class="mt-1 text-sm text-blue-600" />
+            </div>
+
+            <!-- ===== PASSWORD ===== -->
+            <div class="form-group">
+                <label for="password" class="form-label">
+                    Password
+                </label>
+
+                <div class="input-field">
+                    <span class="input-icon">🔒</span>
+                    <input
+                        id="password"
+                        type="password"
+                        name="password"
+                        required
+                        autocomplete="new-password"
+                        placeholder="Create a password"
+                    />
+                    <button
+                        type="button"
+                        id="togglePassword"
+                        class="password-toggle-btn"
+                        aria-label="Toggle password visibility"
+                    >
+                        👁️
+                    </button>
+                </div>
+
+                <div class="password-hint">
+                    <span>💡</span>
+                    <span>Min 8 characters with letters & numbers</span>
+                </div>
+
+                <x-input-error :messages="$errors->get('password')" class="mt-1 text-sm text-blue-600" />
+            </div>
+
+            <!-- ===== CONFIRM PASSWORD ===== -->
+            <div class="form-group">
+                <label for="password_confirmation" class="form-label">
+                    Confirm Password
+                </label>
+
+                <div class="input-field">
+                    <span class="input-icon">✅</span>
+                    <input
+                        id="password_confirmation"
+                        type="password"
+                        name="password_confirmation"
+                        required
+                        autocomplete="new-password"
+                        placeholder="Confirm your password"
+                    />
+                    <button
+                        type="button"
+                        id="toggleConfirmPassword"
+                        class="password-toggle-btn"
+                        aria-label="Toggle password visibility"
+                    >
+                        👁️
+                    </button>
+                </div>
+
+                <x-input-error :messages="$errors->get('password_confirmation')" class="mt-1 text-sm text-blue-600" />
+            </div>
+
+            <!-- ===== REGISTER BUTTON ===== -->
+            <div class="mt-4">
+                <button type="submit" class="btn-glow">
+                    {{ __('Create Account') }}
+                </button>
+            </div>
+
+            <!-- ===== LOGIN LINK ===== -->
+            <div class="text-center mt-3 pt-3 border-t divider-line text-sm">
+
+                <span class="text-slate-500">
+                    Already have an account?
+                </span>
+
+                <a href="{{ route('login') }}"
+                   class="link-blue font-semibold hover:underline underline-offset-2 transition ml-1">
+                    Login
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- ===== JAVASCRIPT ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Password Toggle
+            const toggleBtn = document.getElementById('togglePassword');
+            const passwordInput = document.getElementById('password');
+
+            if (toggleBtn && passwordInput) {
+                toggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isPassword = passwordInput.getAttribute('type') === 'password';
+                    passwordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                    this.textContent = isPassword ? '🙈' : '👁️';
+                });
+            }
+
+            const toggleConfirmBtn = document.getElementById('toggleConfirmPassword');
+            const confirmPasswordInput = document.getElementById('password_confirmation');
+
+            if (toggleConfirmBtn && confirmPasswordInput) {
+                toggleConfirmBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const isPassword = confirmPasswordInput.getAttribute('type') === 'password';
+                    confirmPasswordInput.setAttribute('type', isPassword ? 'text' : 'password');
+                    this.textContent = isPassword ? '🙈' : '👁️';
+                });
+            }
+
+            // Zoom Fix
+            const allInputs = document.querySelectorAll('input, textarea, select');
+
+            allInputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.style.fontSize = '16px';
+                    this.style.transform = 'scale(1)';
+                });
+
+                input.addEventListener('touchstart', function() {
+                    this.style.fontSize = '16px';
+                    this.style.transform = 'scale(1)';
+                });
+
+                input.addEventListener('touchend', function(e) {
+                    this.style.fontSize = '16px';
+                    this.style.transform = 'scale(1)';
+                    if (this !== document.activeElement) {
+                        this.focus();
+                    }
+                });
+
+                input.addEventListener('change', function() {
+                    this.style.fontSize = '16px';
+                    this.style.transform = 'scale(1)';
+                });
+
+                const observer = new MutationObserver(function() {
+                    if (input.style.fontSize !== '16px') {
+                        input.style.fontSize = '16px';
+                    }
+                    if (input.style.transform !== 'scale(1)') {
+                        input.style.transform = 'scale(1)';
+                    }
+                });
+                observer.observe(input, { attributes: true, attributeFilter: ['style'] });
+            });
+
+            // Prevent zoom gestures
+            document.addEventListener('gesturestart', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('gesturechange', function(e) {
+                e.preventDefault();
+            });
+
+            document.addEventListener('gestureend', function(e) {
+                e.preventDefault();
+            });
+
+            // Prevent double-tap zoom
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(e) {
+                const now = Date.now();
+                if (now - lastTouchEnd <= 300) {
+                    e.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, { passive: false });
+
+            // Force viewport on resize
+            window.addEventListener('resize', function() {
+                const meta = document.querySelector('meta[name=viewport]');
+                if (meta) {
+                    meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover';
+                }
+            });
+
+            console.log('✅ Zoom protection active!');
+        });
+    </script>
+
+</x-guest-layout>
